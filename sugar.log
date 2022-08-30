@@ -1,0 +1,2 @@
+{"v":0,"name":"sugar","msg":"Lend me some sugar, I am your neighbor.","level":30,"hostname":"DESKTOP-1CRN57J","pid":4446,"time":"2022-08-30T15:38:19.0854071Z","target":"sugar","line":115,"file":"src/main.rs"}
+{"v":0,"name":"sugar","msg":"Cache exists, loading...","level":30,"hostname":"DESKTOP-1CRN57J","pid":4446,"time":"2022-08-30T15:38:19.1705332Z","target":"sugar_cli::cache","line":157,"file":"src/cache.rs"}

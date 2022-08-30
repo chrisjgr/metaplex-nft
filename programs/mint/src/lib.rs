@@ -4,10 +4,10 @@ use {
     mpl_token_metadata::{instruction as token_instruction, ID as TOKEN_METADATA_ID},
 };
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("55ibTnYbkZZPhuSxPtsG2v1t76gAjHxDxLbj3q6EikPo");
 
 #[program]
-pub mod mint {
+pub mod mint_nft {
     use super::*;
 
     pub fn mint(
@@ -18,7 +18,6 @@ pub mod mint {
     ) -> Result<()> {
         msg!("Creating mint account...");
         msg!("Mint: {}", &_ctx.accounts.mint.key());
-
         system_program::create_account(
             CpiContext::new(
                 _ctx.accounts.token_program.to_account_info(),
@@ -34,10 +33,9 @@ pub mod mint {
 
         msg!("Initializing mint account...");
         msg!("Mint: {}", &_ctx.accounts.mint.key());
-
         token::initialize_mint(
             CpiContext::new(
-                _ctx.accounts.associated_token_program.to_account_info(),
+                _ctx.accounts.token_program.to_account_info(),
                 token::InitializeMint {
                     mint: _ctx.accounts.mint.to_account_info(),
                     rent: _ctx.accounts.rent.to_account_info(),
@@ -50,7 +48,6 @@ pub mod mint {
 
         msg!("Creating token account...");
         msg!("Token Address: {}", &_ctx.accounts.token_account.key());
-
         associated_token::create(CpiContext::new(
             _ctx.accounts.associated_token_program.to_account_info(),
             associated_token::Create {
@@ -67,7 +64,6 @@ pub mod mint {
         msg!("Minting token to token account...");
         msg!("Mint: {}", &_ctx.accounts.mint.to_account_info().key());
         msg!("Token Address: {}", &_ctx.accounts.token_account.key());
-
         token::mint_to(
             CpiContext::new(
                 _ctx.accounts.token_program.to_account_info(),
@@ -85,7 +81,6 @@ pub mod mint {
             "Metadata account address: {}",
             &_ctx.accounts.metadata.to_account_info().key()
         );
-
         invoke(
             &token_instruction::create_metadata_accounts_v2(
                 TOKEN_METADATA_ID,
@@ -118,7 +113,6 @@ pub mod mint {
             "Master edition metadata account address: {}",
             &_ctx.accounts.master_edition.to_account_info().key()
         );
-
         invoke(
             &token_instruction::create_master_edition_v3(
                 TOKEN_METADATA_ID,
@@ -148,13 +142,13 @@ pub mod mint {
 
 #[derive(Accounts)]
 pub struct MintNft<'info> {
-    //* CHECK: We're about to create this with Metaplex
     // metadata with the info about the NFT
+    /// CHECK: We're about to create this with Metaplex
     #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
 
-    //* CHECK: We're about to create this with Metaplex
-    // owner to edit
+     // owner to edit
+    /// CHECK: We're about to create this with Metaplex
     #[account(mut)]
     pub master_edition: UncheckedAccount<'info>,
 
@@ -163,6 +157,7 @@ pub struct MintNft<'info> {
     pub mint: Signer<'info>,
 
     //User Token Account
+    /// CHECK: We're about to create this with Anchor
     #[account(mut)]
     pub token_account: UncheckedAccount<'info>,
 
@@ -170,7 +165,7 @@ pub struct MintNft<'info> {
     #[account(mut)]
     pub mint_authority: Signer<'info>,
 
-    // Rent var
+     // Rent var
     pub rent: Sysvar<'info, Rent>,
 
     // System Program
@@ -181,7 +176,7 @@ pub struct MintNft<'info> {
 
     // Associated account of the token
     pub associated_token_program: Program<'info, associated_token::AssociatedToken>,
-
     // Metadata program.
-    pub token_metada_program: UncheckedAccount<'info>,
+    /// CHECK: Metaplex will check this
+    pub token_metadata_program: UncheckedAccount<'info>,
 }
