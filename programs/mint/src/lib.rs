@@ -147,7 +147,7 @@ pub struct MintNft<'info> {
     #[account(mut)]
     pub metadata: UncheckedAccount<'info>,
 
-     // owner to edit
+    // owner to edit
     /// CHECK: We're about to create this with Metaplex
     #[account(mut)]
     pub master_edition: UncheckedAccount<'info>,
@@ -165,7 +165,7 @@ pub struct MintNft<'info> {
     #[account(mut)]
     pub mint_authority: Signer<'info>,
 
-     // Rent var
+    // Rent var
     pub rent: Sysvar<'info, Rent>,
 
     // System Program
